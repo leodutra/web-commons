@@ -194,18 +194,18 @@ var web = (function (window, $)
 				var $el = $('[name=' + key + ']', root);
 				switch ($el.attr("type"))
 				{
-				case "radio":
-				case "checkbox":
-					$el.each(function ()
-					{
-						if ($(this).attr('value') == value)
+					case "radio":
+					case "checkbox":
+						$el.each(function ()
 						{
-							$(this).attr("checked", value);
-						}
-					});
-					break;
-				default:
-					$el.val(value);
+							if ($(this).attr('value') == value)
+							{
+								$(this).attr("checked", value);
+							}
+						});
+						break;
+					default:
+						$el.val(value);
 				}
 			});
 		}
