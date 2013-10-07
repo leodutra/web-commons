@@ -69,10 +69,12 @@ var web = (function (window, $)
 					}
 				}
 			});
-			var params = data.params;
+			
+			var name, params = data.params;
+			
 			if (params)
 			{
-				for (var name in params)
+				for (name in params)
 				{
 					if (params.hasOwnProperty(name))
 					{
@@ -81,7 +83,7 @@ var web = (function (window, $)
 				}
 			}
 			var inputs = [];
-			for (var name in finalParams)
+			for (name in finalParams)
 			{
 				if (finalParams.hasOwnProperty(name))
 				{
@@ -114,11 +116,11 @@ var web = (function (window, $)
 						{
 							textArea.val(textArea.val().substr(0, size));
 						}
-						textArea.data('remaininglength', size - textArea.val().length)
+						textArea.data('remaininglength', size - textArea.val().length);
 						textArea = event = null;
 					}, 100);
 				});
-			})
+			});
 		},
 		
 		requestAnimationFrame: (function ()
@@ -142,10 +144,14 @@ var web = (function (window, $)
 			var prop, type, cache = [];
 			for (prop in obj)
 			{
-				if (ownProperties && !obj.hasOwnProperty(prop)) continue;
-				type = typeof obj[prop];
-				cache.push(prop + (type === 'function' ? '()' : ' :' +
-					(Object.prototype.toString.call(obj[prop]) === '[object Array]' ? 'Array' : type.charAt(0).toUpperCase() + type.substr(1))));
+				if (obj.hasOwnProperty(prop) || !ownProperties) {
+					type = typeof obj[prop];
+					cache.push(prop + (type === 'function' ? '()' : ' :' +
+						(Object.prototype.toString.call(obj[prop]) === '[object Array]' ? 
+							'Array' : 
+							type.charAt(0).toUpperCase() + type.substr(1)))
+						);
+				}
 			}
 			return cache.join(separator || ', ');
 		},
