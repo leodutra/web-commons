@@ -5,6 +5,8 @@
  
 var web = (function (window, $)
 {
+	"use strict"; // js strict mode
+	
 	/*private static*/ var preloadedImgs = [];
 
 	return {
