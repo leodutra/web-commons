@@ -42,7 +42,7 @@ var web = (function (window, $)
 				}
 			});
 		},
-
+ 
 		/** utils.submit({
 		 *   url: 'http://www.google.com',
 		 *   forms: [ '#form1', '#form2' ],
