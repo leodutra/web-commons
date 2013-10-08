@@ -6,15 +6,13 @@
 var web = (function (window, $)
 {
 	"use strict"; // js strict mode
-	
-	/*private static*/ var preloadedImgs = [];
 
 	return {
 
 		/** Set to true for debug mode on */
 		debug: false,
 
-		/** requires "utils.debug = true" to work */
+		/** Logs when debug mode is set to "true" */
 		log: function ()
 		{
 			if (this.debug)
@@ -27,75 +25,53 @@ var web = (function (window, $)
 			}
 		},
 
-		/** utils.preloadImgs([
+		/** .preloadImgs([
 		 *   '/Sistema/includes/imgs/imagem1.jpg',
 		 *   '/Sistema/includes/imgs/imagem2.jpg'
 		 * ]);
 		 */
-		preloadImgs: function (arrayOfSources)
+		preloadImgs: function (srcs)
 		{
-			$(arrayOfSources).each(function ()
-			{
-				if (typeof this == 'string')
-				{
-					var img = $('<img/>')[0];
-					img.src = this.toString();
-					preloadedImgs.push(img);
-				}
-			});
+			$.each(srcs, function(i,src) { $.get(src); });
 		},
  
-		/** utils.submit({
+		/** .submit({
 		 *   url: 'http://www.google.com',
-		 *   forms: [ '#form1', '#form2' ],
-		 *   params: {
+		 *   form: '#form1',
+		 *   overrides: {
 		 *     'userVo.codigo': 120,
 		 *     'userVo.nome': 'Joaozinho'
 		 *   },
 		 *   method: 'POST'
 		 * });
 		 */
-		submit: function (data /* = {url, forms, params, method}*/ )
+		submit: function (data /* = {url, forms, overrides, method}*/ )
 		{
-			var finalParams = {};
-			$(data.forms).each(function ()
-			{
-				var serialization = $(this).serializeArray();
-				for (var k in serialization)
-				{
-					if (serialization.hasOwnProperty(k))
-					{
-						finalParams[serialization[k].name] = serialization[k].value;
-					}
+			var k, inputs = '', overrides = data.overrides || {};
+
+			function add(name, value) {
+				inputs += '<input type="hidden" name="' + name + '" value="' + value + '"/>';
+			}
+
+			$.each($(data.forms).serializeArray(), function(i,obj) {
+				if (!overrides.hasOwnProperty(obj.name)) {
+					add(obj.name, obj.value);
 				}
 			});
-			
-			var name, params = data.params;
-			
-			if (params)
-			{
-				for (name in params)
-				{
-					if (params.hasOwnProperty(name))
-					{
-						finalParams[name] = params[name];
-					}
+
+			$.each(overrides, function(key,value) {
+				if (overrides.hasOwnProperty(key)) {
+					add(key, value);
 				}
-			}
-			var inputs = [];
-			for (name in finalParams)
-			{
-				if (finalParams.hasOwnProperty(name))
-				{
-					inputs.push('<input type="hidden" name="' + name + '" value="' + finalParams[name] + '"/>');
-				}
-			}
+			});
+
 			var form = $('<form></form>',
 			{
 				method: data.method || 'POST',
 				action: data.url
 			});
-			$(document.body).append(form.append(inputs.join('')));
+
+			$(document.body).append(form.append(inputs));
 			form.submit();
 		},
 
@@ -104,20 +80,19 @@ var web = (function (window, $)
 		{
 			$(selector).each(function ()
 			{
-				var self = $(this);
-				self.attr('maxlength', size);
-				self.data('maxlength', size);
-				self.bind("keypress cut copy paste", function (event)
+				var el = $(this);
+				el.attr('maxlength', size);
+				el.bind("keypress cut copy paste", function (event)
 				{
-					var textArea = $(this);
+					var el = $(this);
 					setTimeout(function ()
 					{
-						if (textArea.val().length > size)
+						if (el.val().length > size)
 						{
-							textArea.val(textArea.val().substr(0, size));
+							el.val(el.val().substr(0, size));
 						}
-						textArea.data('remaininglength', size - textArea.val().length);
-						textArea = event = null;
+						el.data('remaininglength', size - el.val().length);
+						el = event = null;
 					}, 100);
 				});
 			});
@@ -130,30 +105,23 @@ var web = (function (window, $)
 				window.mozRequestAnimationFrame ||
 				function (callback)
 				{
-					window.setTimeout(callback, 1000 / 60);
-			};
+					setTimeout(callback, 1000 / 60);
+				};
 		})(),
 
 		/**
 		 * Ease object logging for developers.
-		 * ex:
-		 *     console.log(utils.typify(someObject))
 		 */
-		typify: function (obj, ownProperties, separator)
+		typify: function (obj, inheritedProperties, separator)
 		{
-			var prop, type, cache = [];
+			var prop, type, res = [];
 			for (prop in obj)
 			{
-				if (obj.hasOwnProperty(prop) || !ownProperties) {
-					type = typeof obj[prop];
-					cache.push(prop + (type === 'function' ? '()' : ' :' +
-						(Object.prototype.toString.call(obj[prop]) === '[object Array]' ? 
-							'Array' : 
-							type.charAt(0).toUpperCase() + type.substr(1)))
-						);
+				if (obj.hasOwnProperty(prop) || inheritedProperties) {
+					res.push(prop + (typeof obj[prop] === 'function' ? '()' : ' :' + $.type(obj[prop])));
 				}
 			}
-			return cache.join(separator || ', ');
+			return res.join(separator || ', ');
 		},
 
 		numberFormat: function (number, decimals, dec_point, thousands_sep)
@@ -195,27 +163,47 @@ var web = (function (window, $)
 			return s + number;
 		},
 
-		populateFields: function (data, root)
+		populate: function (nameValue, root)
 		{
-			$.each(data, function (key, value)
+			$.each(nameValue, function (name, value)
 			{
-				var $el = $('[name=' + key + ']', root);
-				switch ($el.attr("type"))
+				$('[name=' + name + ']', root).each(function ()
 				{
-					case "radio":
-					case "checkbox":
-						$el.each(function ()
-						{
-							if ($(this).attr('value') == value)
-							{
-								$(this).attr("checked", value);
-							}
-						});
+					var $el = $(this);
+					switch ($el.attr("type"))
+					{
+						case "radio":
+						case "checkbox":
+							$el.each(function(){
+
+								if($(this).attr('value') == value) {  
+									this.checked = true; 
+								} 
+							});
+							break;
+						default:
+							$el.val(value);
+					}
+				});
+			});
+		},
+		
+		clearForm: function(root) {
+
+			$(':input', root).each(function() {
+			
+				var $el = $(this);
+
+				switch($el.attr("type")) {
+					case 'checkbox':
+					case 'radio':
+						this.checked = false;
 						break;
-					default:
-						$el.val(value);
+					default: 
+						$el.val('');
 				}
 			});
+
 		}
 	};
 })(this, jQuery);
