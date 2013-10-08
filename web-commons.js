@@ -187,23 +187,13 @@ var web = (function (window, $)
 				});
 			});
 		},
-		
-		clearForm: function(root) {
 
-			$(':input', root).each(function() {
-			
-				var $el = $(this);
-
-				switch($el.attr("type")) {
-					case 'checkbox':
-					case 'radio':
-						this.checked = false;
-						break;
-					default: 
-						$el.val('');
+		resetForm: function(forms) {
+			$(forms).each(function() {
+				if ($(this).is('form')) {
+					this.reset();
 				}
-			});
-
+			}); 
 		}
 	};
 })(this, jQuery);
