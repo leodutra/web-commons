@@ -6,4 +6,7 @@ Collection of open source reusable JavaScript snippets.
 
 ## Documentation
 
-`web.log(web.typify(web).replace(/,/gm, '\n'));`
+Just execute on your console:
+
+    web.debug = true;
+    web.log(web.typify(web));
