@@ -5,7 +5,7 @@
  
 var web = (function (window, $)
 {
-	"use strict"; // js strict mode
+	"use strict";  // http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
 
 	return {
 
@@ -18,10 +18,18 @@ var web = (function (window, $)
 			if (this.debug)
 			{
 				var str = Array.prototype.slice.call(arguments);
-				if (window.console && console.log)
-					console.log(str);
-				else
+				if (window.console) {
+					if (typeof console.log == 'object' || window.opera) {
+						Function.prototype.call.call(console.log, console, str);
+					}
+					else {
+						console.log.apply(arguments);
+					}
+				}
+				
+				else {
 					alert(str);
+				}
 			}
 		},
 
@@ -32,7 +40,7 @@ var web = (function (window, $)
 		 */
 		preloadImgs: function (srcs)
 		{
-			$.each(srcs, function(i,src) { $.get(src); });
+			$.each(srcs, function(i, src) { $.get(src); });
 		},
  
 		/** .submit({
@@ -175,10 +183,7 @@ var web = (function (window, $)
 						case "radio":
 						case "checkbox":
 							$el.each(function(){
-
-								if($(this).attr('value') == value) {  
-									this.checked = true; 
-								} 
+								$(this).val($.isArray(value) ?  value : [value]);
 							});
 							break;
 						default:
@@ -190,9 +195,7 @@ var web = (function (window, $)
 
 		resetForm: function(forms) {
 			$(forms).each(function() {
-				if ($(this).is('form')) {
-					this.reset();
-				}
+				if ($(this).is('form')) this.reset();
 			}); 
 		}
 	};
