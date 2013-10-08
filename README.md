@@ -9,4 +9,4 @@ Collection of open source reusable JavaScript snippets.
 Just execute on your console:
 
     web.debug = true;
-    web.log(web.typify(web));
+    web.typify(web);
