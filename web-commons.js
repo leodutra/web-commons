@@ -88,19 +88,19 @@ var web = (function (window, $)
 		{
 			$(selector).each(function ()
 			{
-				var el = $(this);
-				el.attr('maxlength', size);
-				el.bind("keypress cut copy paste", function (event)
+				var $el = $(this);
+				$el.attr('maxlength', size);
+				$el.bind("keypress cut copy paste", function (event)
 				{
-					var el = $(this);
+					var $el = $(this);
 					setTimeout(function ()
 					{
-						if (el.val().length > size)
+						if ($el.val().length > size)
 						{
-							el.val(el.val().substr(0, size));
+							$el.val(el.val().substr(0, size));
 						}
-						el.data('remaininglength', size - el.val().length);
-						el = event = null;
+						$el.data('remaininglength', size - $el.val().length);
+						$el = event = null;
 					}, 100);
 				});
 			});
