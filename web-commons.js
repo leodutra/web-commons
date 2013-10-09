@@ -23,7 +23,7 @@ var web = (function (window, $)
 						Function.prototype.call.call(console.log, console, str);
 					}
 					else {
-						console.log.apply(arguments);
+						console.log.apply(console, arguments);
 					}
 				}
 				
