@@ -1,5 +1,5 @@
 /**
- * Collection of open source reusable JavaScript snippets.
+ * Collection of useful JavaScript snippets, integrated in one open source lib.
  * jQuery 1.5+ required (1.9+ recommended)
  */
  
