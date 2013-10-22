@@ -197,6 +197,27 @@ var web = (function (window, $)
 			$(forms).each(function() {
 				if ($(this).is('form')) this.reset();
 			}); 
+		},
+		
+		formData: function (form) {
+			var data = {};
+		
+			function add(name, val) {
+				if (data.hasOwnProperty(name)) {
+					if ($.isArray(data[name])) {
+						data[name].push(val);
+					} else {
+						data[name] = [data[name], val];
+					}
+				} else {
+					data[name] = val;
+				}
+			}
+			$.each($(form).serializeArray(), function (i, obj) {
+				add(obj.name, obj.value);
+			});
+		
+			return data;
 		}
 	};
 })(this, jQuery);
