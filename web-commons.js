@@ -175,7 +175,7 @@ var web = (function (window, $)
 		{
 			$.each(nameValue, function (name, value)
 			{
-				$('[name=' + name + ']', root).each(function ()
+				$('[name="' + name + '"]', root).each(function ()
 				{
 					var $el = $(this);
 					switch ($el.attr("type"))
