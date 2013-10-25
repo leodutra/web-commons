@@ -6,6 +6,8 @@
 var web = (function (window, $)
 {
 	"use strict";  // http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
+	
+	if (!$) throw 'jQuery is required by web-commons';
 
 	return {
 
@@ -226,4 +228,4 @@ var web = (function (window, $)
 		}
 	};
 
-})(this, jQuery);
+})(this, this.jQuery);
