@@ -3,10 +3,11 @@
  * jQuery 1.5+ required (1.9+ recommended)
  */
  
-var web = (function (window, $) // isolates scope
+var web = (function (window) // isolates scope
 {
 	'use strict';  // http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
 	
+	var $ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
 
 	return {
@@ -229,4 +230,4 @@ var web = (function (window, $) // isolates scope
 		}
 	};
 
-})(this, this.jQuery);
+})(window);
