@@ -9,4 +9,4 @@ Collection of useful JavaScript snippets, integrated in one open source lib.
 Just execute on your console:
 
     web.debug = true;
-    web.typify(web);
+    web.typify(web, false, '\n');
