@@ -122,11 +122,13 @@ var web = (function (window, $)
 		 */
 		typify: function (obj, inheritedProperties, separator)
 		{
-			var prop, type, res = [];
+			var prop, type, value, res = [];
 			for (prop in obj)
 			{
 				if (obj.hasOwnProperty(prop) || inheritedProperties) {
-					res.push(prop + (typeof obj[prop] === 'function' ? '()' : ' :' + $.type(obj[prop])));
+					value = obj[prop];
+					type = $.type(value);
+					res.push(prop + (type === 'function' ? ('' + value).replace(/\r?\n/gim, '').match(/\([^)]*\)/) : ' :' + type));
 				}
 			}
 			return res.join(separator || ', ');
