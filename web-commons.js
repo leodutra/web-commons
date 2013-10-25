@@ -13,7 +13,7 @@ var web = (function (window, $)
 		debug: false,
 
 		/** Logs when debug mode is set to "true" */
-		log: function ()
+		log: function (/* a, b, c, d, ... */)
 		{
 			if (this.debug)
 			{
@@ -26,23 +26,12 @@ var web = (function (window, $)
 						console.log.apply(console, arguments);
 					}
 				}
-				
 				else {
 					alert(str);
 				}
 			}
 		},
 
-		/** .preloadImgs([
-		 *   '/Sistema/includes/imgs/imagem1.jpg',
-		 *   '/Sistema/includes/imgs/imagem2.jpg'
-		 * ]);
-		 */
-		preloadImgs: function (srcs)
-		{
-			$.each(srcs, function(i, src) { $.get(src); });
-		},
- 
 		/** .submit({
 		 *   url: 'http://www.google.com',
 		 *   form: '#form1',
@@ -53,7 +42,7 @@ var web = (function (window, $)
 		 *   method: 'POST'
 		 * });
 		 */
-		submit: function (data /* = {url, forms, overrides, method}*/ )
+		submit: function (data /* {url, forms, overrides, method} */)
 		{
 			var k, inputs = '', overrides = data.overrides || {};
 
@@ -73,7 +62,7 @@ var web = (function (window, $)
 				}
 			});
 
-			var form = $('<form></form>',
+			var form = $('<form/>',
 			{
 				method: data.method || 'POST',
 				action: data.url
@@ -83,13 +72,23 @@ var web = (function (window, $)
 			form.submit();
 		},
 
-		/** maxlength for <textarea> elements */
-		limitTextAreaLength: function (selector, size)
+		/** .preloadImgs([
+		 *   '/Sistema/includes/imgs/imagem1.jpg',
+		 *   '/Sistema/includes/imgs/imagem2.jpg'
+		 * ]);
+		 */
+		preloadImgs: function (sources)
 		{
-			$(selector).each(function ()
+			$.each(sources, function(i, src) { $.get(src); });
+		},
+
+		/** maxlength for <textarea> elements */
+		limitTextAreaLength: function (textArea, size /*=200*/)
+		{
+			$(textArea).each(function ()
 			{
 				var $el = $(this);
-				$el.attr('maxlength', size);
+				$el.attr('maxlength', size || 200);
 				$el.bind("keypress cut copy paste", function (event)
 				{
 					var $el = $(this);
@@ -120,21 +119,28 @@ var web = (function (window, $)
 		/**
 		 * Ease object logging for developers.
 		 */
-		typify: function (obj, inheritedProperties, separator)
+		typify: function (obj, inheritedProperties/* =false */, separator/* =', ' */)
 		{
-			var prop, type, value, res = [];
+			var prop, type, value, fn = [], props = [];
 			for (prop in obj)
 			{
 				if (obj.hasOwnProperty(prop) || inheritedProperties) {
 					value = obj[prop];
 					type = $.type(value);
-					res.push(prop + (type === 'function' ? ('' + value).replace(/\r?\n/gim, '').match(/\([^)]*\)/) : ' :' + type));
+					if (type === 'function') {
+						fn.push(prop + ('' + value) // string cast
+							.replace(/\r?\n/gim, '') // remove line breaks
+							.match(/\([^)]*\)/)); // match arguments
+					}
+					else {
+						props.push(prop + ' :' + type);
+					}
 				}
 			}
-			return res.join(separator || ', ');
+			return props.concat(fn).join(separator || ', ');
 		},
 
-		numberFormat: function (number, decimals, decPoint, thousandsSepar)
+		numberFormat: function (number, decimals, decPoint/* ='.' */, thousandsSepar/* =','*/)
 		{
 			// http://kevin.vanzonneveld.net/techblog/article/javascript_equivalent_for_phps_number_format/
 			number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
@@ -163,17 +169,14 @@ var web = (function (window, $)
 		},
 
 		/** Add zeros on the left: "0000012" */
-		addZeros: function (number, length)
+		addZeros: function (num, length)
 		{
-			length = Math.max(length - ('' + number).length, 0);
-			for (var s = ''; length--;)
-			{
-				s += '0';
-			}
-			return s + number;
+			length = Math.max(length - ('' + num).length, 0);
+			for (var s = ''; length--;) s += '0';
+			return s + num;
 		},
 
-		populate: function (nameValue, root)
+		populate: function (nameValue, root/* =document */)
 		{
 			$.each(nameValue, function (name, value)
 			{
@@ -196,8 +199,8 @@ var web = (function (window, $)
 		},
 
 		resetForm: function(forms) {
-			$(forms).each(function() {
-				if ($(this).is('form')) this.reset();
+			$(forms).each(function(i, form) {
+				if ($(form).is('form')) form.reset();
 			}); 
 		},
 		
@@ -222,4 +225,5 @@ var web = (function (window, $)
 			return data;
 		}
 	};
+
 })(this, jQuery);
