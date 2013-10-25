@@ -90,8 +90,9 @@ var web = (function (window, $)
 			$(textArea).each(function ()
 			{
 				var $el = $(this);
-				$el.attr('maxlength', size || 200);
-				$el.bind("keypress cut copy paste", function (event)
+				size = size || 200;
+				$el.attr('maxlength', size);
+				size = $el.bind("keypress cut copy paste", functsize || 200ion (event)
 				{
 					var $el = $(this);
 					setTimeout(function ()
