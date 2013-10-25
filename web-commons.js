@@ -92,7 +92,7 @@ var web = (function (window, $)
 				var $el = $(this);
 				size = size || 200;
 				$el.attr('maxlength', size);
-				size = $el.bind("keypress cut copy paste", functsize || 200ion (event)
+				size = $el.bind("keypress cut copy paste", function (event)
 				{
 					var $el = $(this);
 					setTimeout(function ()
