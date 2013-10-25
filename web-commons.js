@@ -132,14 +132,14 @@ var web = (function (window, $)
 			return res.join(separator || ', ');
 		},
 
-		numberFormat: function (number, decimals, dec_point, thousands_sep)
+		numberFormat: function (number, decimals, decPoint, thousandsSepar)
 		{
 			// http://kevin.vanzonneveld.net/techblog/article/javascript_equivalent_for_phps_number_format/
 			number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 			var n = !isFinite(+number) ? 0 : +number,
 				prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-				sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-				dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+				sep = (typeof thousandsSepar === 'undefined') ? ',' : thousandsSepar,
+				dec = (typeof decPoint === 'undefined') ? '.' : decPoint,
 				s = '',
 				toFixedFix = function (n, prec)
 				{
