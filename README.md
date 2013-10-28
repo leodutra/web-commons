@@ -10,5 +10,8 @@ There's no reference yet.
 
 But you can just execute on your console:
 
-    web.debug = true;                   // debug mode on
-    web.typify(web, false, '\n');       // show property/function list, breaking lines
+```js
+    web.debug = true;               // debug mode on
+    web.typify(web, false, '\n');   // show property/function list, breaking lines
+```
+
