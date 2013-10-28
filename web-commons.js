@@ -173,7 +173,7 @@ var web = (function (window) // isolates scope
 		},
 
 		/** Add zeros on the left: "0000012" */
-		addZeros: function (num, length)
+		leftZeros: function (num, length)
 		{
 			length = Math.max(length - ('' + num).length, 0);
 			for (var s = ''; length--;) s += '0';
