@@ -11,7 +11,7 @@ There's no reference yet.
 But you can just execute on your console:
 
 ```js
-    web.debug = true;               // debug mode on
-    web.typify(web, false, '\n');   // show property/function list, breaking lines
+web.debug = true;               // debug mode on
+web.typify(web, false, '\n');   // show property/function list, breaking lines
 ```
 
