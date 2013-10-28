@@ -131,7 +131,7 @@ var web = (function (window) // isolates scope
 				if (obj.hasOwnProperty(prop) || inheritedProperties) {
 					value = obj[prop];
 					type = $.type(value);
-					if (type === 'function') {
+					if (type == 'function') {
 						fn.push(prop + ('' + value) // string cast
 							.replace(/\r?\n/gim, '') // remove line breaks
 							.match(/\([^)]*\)/)); // match arguments
@@ -150,8 +150,8 @@ var web = (function (window) // isolates scope
 			number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 			var n = !isFinite(+number) ? 0 : +number,
 				prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-				sep = (typeof thousandsSepar === 'undefined') ? ',' : thousandsSepar,
-				dec = (typeof decPoint === 'undefined') ? '.' : decPoint,
+				sep = (typeof thousandsSepar == 'undefined') ? ',' : thousandsSepar,
+				dec = (typeof decPoint == 'undefined') ? '.' : decPoint,
 				s = '',
 				toFixedFix = function (n, prec)
 				{
