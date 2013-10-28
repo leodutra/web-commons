@@ -203,8 +203,8 @@ var web = (function (window) // isolates scope
 		},
 
 		resetForm: function(forms) {
-			$(forms).each(function(i, form) {
-				if ($(form).is('form')) form.reset();
+			$(forms).filter('form').each(function(i, form) {
+				form.reset();
 			}); 
 		},
 		
