@@ -6,11 +6,12 @@
  * https://github.com/LeoDutra/web-commons/blob/master/LICENSE
  */
  
-var web = (function (window) // isolates scope
+var web = (function (window, $, undefined) // isolates scope
 {
-	'use strict';  // http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
+	// http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
+	'use strict';
 	
-	var $ = window.jQuery;
+	$ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
 
 	return {
