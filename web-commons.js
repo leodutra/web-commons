@@ -1,6 +1,9 @@
 /**
  * Collection of useful JavaScript snippets, integrated in one open source lib.
  * jQuery 1.5+ required (1.9+ recommended)
+ * 
+ * MIT License (MIT) Copyright (c) 2013 Leonardo Dutra
+ * https://github.com/LeoDutra/web-commons/blob/master/LICENSE
  */
  
 var web = (function (window) // isolates scope
