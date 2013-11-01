@@ -145,7 +145,7 @@ var web = (function (window, $, undefined) // isolates scope
 					}
 				}
 			}
-			return props.concat(fn).join(separator || ', ');
+			return props.concat(fn).join(separator || '\n');
 		},
 
 		numberFormat: function (number, decimals, decPoint/* ='.' */, thousandsSepar/* =','*/)
