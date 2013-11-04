@@ -1,4 +1,5 @@
-var logger = $('<div>', {
+  // logger box
+  var logger = $('<div>', {
     id: 'web-commons-logger',
     css:{
       position: 'absolute',
