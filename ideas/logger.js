@@ -1,35 +1,20 @@
-  // logger box
-  var logger = $('<div>', {
-    id: 'web-commons-logger',
-    css:{
-      position: 'absolute',
-      top: '10px',
-      right: '10px',
-      width: '400px',
-      height: '300px',
-      'zIndex': 9999,
-      border: '1px solid #ddd',
-      background: '#FFF',
-      opacity: 0.9,
-      padding: '15px 5px 5px 5px',
-      font: 'normal 11px "Courier New", Courier, monospace'
-    }
-  });
-  
-  logger.append(
-    $('<div>', {
-      on: {
-        click: function() {
-          $('#web-commons-logger').hide('fast');
-        }
-      },
-      text: 'x',
-      css:{
-        position: 'absolute',
-        top: '5px',
-        right: '5px'
-      }
-    })
-  );
-  
-  $('body', document).append(logger)
+// logger box
+var id = 'web-commons-logger';
+
+var box = $('<div id="'+id+'" style="position: absolute; top: 10px; right: 10px; width: 400px; height: 300px; z-index: 9999; border: 1px solid #ddd;  font: normal 11px \'Courier New\', Courier, monospace; border: 1px solid #DDD;background: #FFF;"></div>');
+box.css('opacity', 0.93);              
+           
+var close = $('<div style="position: absolute; right: 5px;line-height: 18px;">x</div>');
+close.on('click', function() {
+  $(this).parent().hide('fast');
+});
+box.append(close);
+
+var title = $('<div style="word-wrap: ;line-height: 18px; background: #DDD;">#'+id+'</div>');
+box.append(title);
+
+var content = $('<div class="content" style="word-wrap: break-word, word-break: break-all, margin-top: 15px; height: 282px; "></div>');
+content.css('overflow-y', 'scroll');
+box.append(content);
+
+$('body', document).append(box);
