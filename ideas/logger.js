@@ -5,6 +5,7 @@ var Logger = function($) {
 	    if (this instanceof Logger) {
 
 	    	var that = this;
+
 			var id = 'web-commons-logger';
 
 			var $box = $('<div style="display: none; position: absolute; top: 10px; right: 10px; width: 400px; height: 300px; z-index: 9999; border: 1px solid #ddd;  font: normal 12px \'Courier New\', Courier, monospace; border: 1px solid #DDD;background: #FFF;"></div>');
@@ -30,18 +31,8 @@ var Logger = function($) {
 		}
 	}
 
-	var colors = {
-		'number': '#099',
-		'string': '#D14',
-		'function': '#009926',
-		'array': '#0086B3',
-		'object': '#000',
-		'undefined': '#ddd',
-		'null': '#bbb',
-	};
-
 	function serialize(any) {
-		
+		var colors = this.colors;
 		var type = $.type(any);
 		var res = '<b style="color: ' +colors[type] +'">';
 		var builder = [];
@@ -85,6 +76,16 @@ var Logger = function($) {
 	}
 
 	Logger.prototype = {
+
+		colors = {
+			'number': '#099',
+			'string': '#D14',
+			'function': '#009926',
+			'array': '#0086B3',
+			'object': '#000',
+			'undefined': '#ddd',
+			'null': '#bbb',
+		},
 
 		log: function(/*args*/) {
 			this.$box.show();
