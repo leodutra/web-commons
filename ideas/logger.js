@@ -10,10 +10,10 @@ close.on('click', function() {
 });
 box.append(close);
 
-var title = $('<div style="word-wrap: ;line-height: 18px; background: #DDD;">#'+id+'</div>');
+var title = $('<div style="text-indent: 5px; line-height: 18px; background: #DDD;">#'+id+'</div>');
 box.append(title);
 
-var content = $('<div class="content" style="word-wrap: break-word, word-break: break-all, margin-top: 15px; height: 282px; "></div>');
+var content = $('<div class="content" style="word-wrap: break-word; word-break: break-all; width: 100%;height: 282px; padding: 0 5px;"></div>');
 content.css('overflow-y', 'scroll');
 box.append(content);
 
