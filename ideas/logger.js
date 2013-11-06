@@ -39,7 +39,7 @@ var Logger = function($) {
 		switch(type) {
 
 			case 'function':
-				res += any.toString().replace(/\s+/gm, ' ').replace(/\r?\n/gm, '').match(/.+?\{/gim)+'}';
+				res += any.toString().replace(/\s+/gim, ' ').replace(/\r?\n/gim, '').match(/.+?\)/gim);
 				break;
 
 			case 'array':
