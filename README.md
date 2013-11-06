@@ -4,6 +4,9 @@ Collection of useful JavaScript snippets, integrated in one open source lib.
 
 *jQuery 1.5+ required (1.9+ recommended)*
 
+## Download Releases
+https://github.com/LeoDutra/web-commons/releases
+
 ## Documentation
 
 There's no reference yet.
