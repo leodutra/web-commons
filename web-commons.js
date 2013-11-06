@@ -115,7 +115,7 @@ var web = (function (window, $, undefined) // isolates scope
 		
 		requestAnimationFrame: (function ()
 		{
-			return window.requestAnimationFrame ||
+			return 	window.requestAnimationFrame ||
 				window.webkitRequestAnimationFrame ||
 				window.mozRequestAnimationFrame ||
 				function (callback)
