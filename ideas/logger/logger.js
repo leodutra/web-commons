@@ -84,6 +84,7 @@ var Logger = function($) {
 
 			case 'regexp':
 				any = ('' + any);
+
 			case 'string': 
 				any = useHtml ? 
 					any.replace(/[<>]/gim, function(k) {
@@ -92,6 +93,7 @@ var Logger = function($) {
 					: any;
 				res = '"' +any.replace(/(["'\\])/gim, '\\$1') +'"'; 
 				break; 
+				
 			case 'number':
 			case 'boolean':
 				res = any;
@@ -103,7 +105,7 @@ var Logger = function($) {
 	Logger.prototype = {
 
 		log: function(/*args*/) {
-			this.$box.show();
+			this.show();
 
 			var args = Array.prototype.slice.call(arguments);
 			var res = [];
@@ -118,7 +120,7 @@ var Logger = function($) {
 		},
 
 		show: function() {
-			this.$box.show();
+			this.$box.fadeIn('slow');
 		},
 
 		hide: function() {
