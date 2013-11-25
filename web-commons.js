@@ -186,24 +186,26 @@ var web = (function (window, $, undefined) // isolates scope
 
 		populate: function (nameValue, root/* =document */)
 		{
-			$.each(nameValue, function (name, value)
-			{
-				$('[name="' + name + '"]', root).each(function ()
+			if ($.type(nameValue) == 'object') {
+				$.each(nameValue, function (name, value)
 				{
-					var $el = $(this);
-					switch ($el.attr("type"))
+					$('[name="' + name + '"]', root).each(function ()
 					{
-						case "radio":
-						case "checkbox":
-							$el.each(function(){
-								$(this).val($.isArray(value) ?  value : [value]);
-							});
-							break;
-						default:
-							$el.val(value);
-					}
+						var $el = $(this);
+						switch ($el.attr("type"))
+						{
+							case "radio":
+							case "checkbox":
+								$el.each(function(){
+									$(this).val($.isArray(value) ?  value : [value]);
+								});
+								break;
+							default:
+								$el.val(value);
+						}
+					});
 				});
-			});
+			}
 		},
 
 		resetForm: function(forms) {
