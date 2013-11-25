@@ -120,7 +120,7 @@ var web = (function (window, $, undefined) // isolates scope
 				window.mozRequestAnimationFrame ||
 				function (callback)
 				{
-					setTimeout(callback, 1000 / 60);
+					setTimeout(callback, 16.666667/* 1000/60 */);
 				};
 		})(),
 
