@@ -233,6 +233,20 @@ var web = (function (window, $, undefined) // isolates scope
 			});
 		
 			return data;
+		},
+		
+		escapeHTML: function(str) {
+			return str.replace(/[<>&\r\n"']/gm, function (match) {
+				return '&' + {
+					'<': 'lt;',
+					'>': 'gt;',
+					'&': 'amp;',
+					'\r': "#13;",
+					'\n': "#10;",
+					'"': 'quot;',
+					"'": 'apos;' /*single quotes just to be safe*/
+				}[match];
+			});
 		}
 	};
 
