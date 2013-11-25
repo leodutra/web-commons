@@ -238,14 +238,28 @@ var web = (function (window, $, undefined) // isolates scope
 		escapeHTML: function(str) {
 			return str.replace(/[<>&\r\n"']/gm, function (match) {
 				return '&' + {
-					'<': 'lt;',
-					'>': 'gt;',
-					'&': 'amp;',
-					'\r': "#13;",
-					'\n': "#10;",
-					'"': 'quot;',
-					"'": 'apos;' /*single quotes just to be safe*/
-				}[match];
+					'<': 'lt',
+					'>': 'gt',
+					'&': 'amp',
+					'\r': "#13",
+					'\n': "#10",
+					'"': 'quot',
+					"'": 'apos'
+				}[match] + ';';
+			});
+		},
+
+		unescapeHTML: function(str) {
+			return str.replace(/&(lt|gt|amp|quot|apos|#13|#10);/gm, function (_, stored) {
+				return {
+					'lt': '<',
+					'gt': '>',
+					'amp': '&',
+					"#13": '\r',
+					"#10": '\n',
+					'quot': '"',
+					'apos': "'"
+				}[stored];
 			});
 		}
 	};
