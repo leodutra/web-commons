@@ -179,9 +179,7 @@ var web = (function (window, $, undefined) // isolates scope
 		/** Add zeros on the left: "0000012" */
 		leftZeros: function (num, length)
 		{
-			length = Math.max(length - ('' + num).length, 0);
-			for (var s = ''; length--;) s += '0';
-			return s + num;
+			return Array(Math.max(length - ('' + num).length, 0) + 1).join(0) + num;
 		},
 
 		populate: function (nameValue, root/* =document */)
