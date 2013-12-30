@@ -148,14 +148,14 @@ var web = (function (window, $, undefined) // isolates scope
 			return props.concat(fn).join(separator || '\n');
 		},
 
-		numberFormat: function (number, decimals, decPoint/* ='.' */, thousandsSepar/* =','*/)
+		numberFormat: function (number, options/*{decimals:Number, decPoint:String, thousandsSepar:String}*/)
 		{
 			// http://kevin.vanzonneveld.net/techblog/article/javascript_equivalent_for_phps_number_format/
 			number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 			var n = !isFinite(+number) ? 0 : +number,
-				prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-				sep = (typeof thousandsSepar == 'undefined') ? ',' : thousandsSepar,
-				dec = (typeof decPoint == 'undefined') ? '.' : decPoint,
+				prec = !isFinite(+options.decimals) ? 0 : Math.abs(options.decimals),
+				sep = (typeof options.thousandsSepar == 'undefined') ? ',' : options.thousandsSepar,
+				dec = (typeof options.decPoint == 'undefined') ? '.' : options.decPoint,
 				s = '',
 				toFixedFix = function (n, prec)
 				{
