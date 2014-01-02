@@ -18,6 +18,7 @@ var web = (function (window, $, undefined) // isolates scope
 
 		/** Set to true for debug mode on */
 		debug: false,
+		_logger: null,
 
 		/** Logs when debug mode is set to "true" */
 		log: function (/* a, b, c, d, ... */)
@@ -34,6 +35,10 @@ var web = (function (window, $, undefined) // isolates scope
 					}
 				}
 				else {
+					if (web.Logger) {
+						if (!web._logger) web.logger = new web.Logger();
+						web.logger.log.apply(web.logger.log, arguments);
+					}
 					alert(str);
 				}
 			}
