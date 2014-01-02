@@ -1,12 +1,12 @@
 if (window.web) {
-	
+
 	web.Logger = function($) {
 
 		function Logger() {
 		          
 		    if (this instanceof Logger) {
 
-		    	var that = this;
+				var that = this;
 
 				var id = 'web-commons-logger';
 
