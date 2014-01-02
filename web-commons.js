@@ -148,7 +148,7 @@ var web = (function (window, $, undefined) // isolates scope
 			return props.concat(fn).join(separator || '\n');
 		},
 
-		numberFormat: function (number, options/*{decimals:Number, decimalSeparator:String, thousandsSeparator:String}*/)
+		number: function (number, options/*{decimals:Number, decimalSeparator:String, thousandsSeparator:String}*/)
 		{
 			// http://kevin.vanzonneveld.net/techblog/article/javascript_equivalent_for_phps_number_format/
 			number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
