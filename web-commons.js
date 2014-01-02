@@ -36,8 +36,8 @@ var web = (function (window, $, undefined) // isolates scope
 				}
 				else {
 					if (web.Logger) {
-						if (!web._logger) web.logger = new web.Logger();
-						web.logger.log.apply(web.logger.log, arguments);
+						if (!web._logger) web._logger = new web.Logger();
+						web._logger.log.apply(web._logger, arguments);
 					}
 					alert(str);
 				}
