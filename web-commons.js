@@ -39,7 +39,9 @@ var web = (function (window, $, undefined) // isolates scope
 						if (!web._logger) web._logger = new web.Logger();
 						web._logger.log.apply(web._logger, arguments);
 					}
-					alert(str);
+					else {
+						alert(str);
+					}
 				}
 			}
 		},
