@@ -1,3 +1,14 @@
+// Hello.
+//
+// This is JSHint, a tool that helps to detect errors and potential
+// problems in your JavaScript code.
+//
+// To start, simply enter some JavaScript anywhere on this page. Your
+// report will appear on the right side.
+//
+// Additionally, you can toggle specific options in the Configure
+// menu.
+
 /**
  * Collection of useful JavaScript snippets, integrated in one open source lib.
  * jQuery 1.5+ required (1.9+ recommended)
@@ -21,57 +32,50 @@ var web = (function (window, $, undefined) // isolates scope
 		_logger: null,
 
 		/** Logs when debug mode is set to "true" */
-		log: function (/* a, b, c, d, ... */)
-		{
-			if (this.debug)
-			{
-				var str = Array.prototype.slice.call(arguments);
-				if (window.console) {
-					if (typeof console.log == 'object' || window.opera) {
-						Function.prototype.call.call(console.log, console, str);
-					}
-					else {
-						console.log.apply(console, arguments);
-					}
+		log: (function () {
+
+			if (window.console) {
+				if (typeof console.log == 'object' || window.opera) {
+					return function() {
+						if (web.debug) Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
+					};
 				}
-				else {
-					if (web.Logger) {
-						if (!web._logger) web._logger = new web.Logger();
-						web._logger.log.apply(web._logger, arguments);
-					}
-					else {
-						alert(str);
-					}
-				}
+				return function() {
+					if (web.debug) console.log.apply(console, arguments);
+				};
 			}
-		},
+			return function() {
+				if (web.debug) alert(Array.prototype.slice.call(arguments));
+			};
+
+		})(),
 
 		/** .submit({
 		 *   url: 'http://www.google.com',
 		 *   form: '#form1',
-		 *   overrides: {
+		 *   properties: {
 		 *     'userVo.codigo': 120,
 		 *     'userVo.nome': 'Joaozinho'
 		 *   },
 		 *   method: 'POST'
 		 * });
 		 */
-		submit: function (data /* {url, forms, overrides, method} */)
+		submit: function (data /* {url, forms, properties, method} */)
 		{
-			var k, inputs = '', overrides = data.overrides || {};
+			var inputs = '', properties = data.properties || {};
 
 			function add(name, value) {
 				inputs += '<input type="hidden" name="' + name + '" value="' + value + '"/>';
 			}
 
 			$.each($(data.forms).serializeArray(), function(i,obj) {
-				if (!overrides.hasOwnProperty(obj.name)) {
+				if (!properties.hasOwnProperty(obj.name)) {
 					add(obj.name, obj.value);
 				}
 			});
 
-			$.each(overrides, function(key,value) {
-				if (overrides.hasOwnProperty(key)) {
+			$.each(properties, function(key,value) {
+				if (properties.hasOwnProperty(key)) {
 					add(key, value);
 				}
 			});
@@ -111,7 +115,7 @@ var web = (function (window, $, undefined) // isolates scope
 					{
 						if ($el.val().length > size)
 						{
-							$el.val(el.val().substr(0, size));
+							$el.val($el.val().substr(0, size));
 						}
 						$el.data('remaininglength', size - $el.val().length);
 						$el = event = null;
@@ -141,7 +145,7 @@ var web = (function (window, $, undefined) // isolates scope
 			{
 				if (obj.hasOwnProperty(prop) || inheritedProperties) {
 					value = obj[prop];
-					type = $.type(value);
+					type = typeof value;
 					if (type == 'function') {
 						fn.push(prop + ('' + value) // string cast
 							.replace(/\r?\n/gim, '') // remove line breaks
@@ -255,7 +259,7 @@ var web = (function (window, $, undefined) // isolates scope
 		},
 
 		unescapeHTML: function(str) {
-			return str.replace(/&(lt|gt|amp|quot|apos|#13|#10);/gm, function (_, stored) {
+			return str.replace(/&(lt|gt|amp|quot|apos|#13|#10);/gm, function (i, stored) {
 				return {
 					'lt': '<',
 					'gt': '>',
