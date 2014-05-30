@@ -14,26 +14,6 @@ var web = (function (window, $, undefined) // isolates scope
 	
 	$ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
-	
-	var TEXT_TO_ENTITY = {
-		'<':  '&lt;',
-		'>':  '&gt;',
-		'&':  '&amp;',
-		'\r': '&#13;',
-		'\n': '&#10;',
-		'"':  '&quot;',
-		"'":  '&apos;'
-	};
-	
-	var ENTITY_TO_TEXT = {
-		'lt': '<',
-		'gt': '>',
-		'amp': '&',
-		"#13": '\r',
-		"#10": '\n',
-		'quot': '"',
-		'apos': "'"
-	};
 
 	return {
 
@@ -267,14 +247,31 @@ var web = (function (window, $, undefined) // isolates scope
 		},
 		
 		escapeHTML: function(str) {
-			return str.replace(/[<>&\r\n"']/gm, function (match) {
-				return TEXT_TO_ENTITY[match];
+			return str.replace(/[<>&]/gm, function (match) {
+				return & + {
+					'<':  'lt',
+					'>':  'gt'
+				///[<>&\r\n"']/gm
+					'&':  'amp',
+					//, '\r': '#13',
+					// '\n': '#10',
+					// '"':  'quot',
+					// "'":  'apos'
+				}[match] + ';';
 			});
 		},
 
 		unescapeHTML: function(str) {
 			return str.replace(/&(lt|gt|amp|quot|apos|#13|#10);/gm, function (i, stored) {
-				return ENTITY_TO_TEXT[stored];
+				return {
+					'lt': '<',
+					'gt': '>',
+					'amp': '&',
+					"#13": '\r',
+					"#10": '\n',
+					'quot': '"',
+					'apos': "'"
+				}[stored];
 			});
 		}
 	};
