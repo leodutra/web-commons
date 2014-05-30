@@ -14,6 +14,26 @@ var web = (function (window, $, undefined) // isolates scope
 	
 	$ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
+	
+	var TEXT_TO_ENTITY = {
+		'<':  '&lt;',
+		'>':  '&gt;',
+		'&':  '&amp;',
+		'\r': '&#13;',
+		'\n': '&#10;',
+		'"':  '&quot;',
+		"'":  '&apos;'
+	};
+	
+	var ENTITY_TO_TEXT = {
+		'lt': '<',
+		'gt': '>',
+		'amp': '&',
+		"#13": '\r',
+		"#10": '\n',
+		'quot': '"',
+		'apos': "'"
+	};
 
 	return {
 
@@ -176,11 +196,23 @@ var web = (function (window, $, undefined) // isolates scope
 			}
 			return s.join(dec);
 		},
-
-		/** Add zeros on the left: "0000012" */
-		leftZeros: function (num, length)
-		{
-			return Array(Math.max(length - ('' + num).length, 0) + 1).join(0) + num;
+		
+		leftPad: function(value, size, pad) {
+			if (value.length < size) {
+				size -= value.length;
+				var res = '';
+				while (size--) res += pad;
+				return res + value;
+			}
+			return value;
+		},
+		
+		rightPad: function(value, size, pad) {
+			if (value.length < size) {
+				size -= value.length;
+				while (size--) value += pad;
+			}
+			return value;
 		},
 
 		populate: function (nameValue, root/* =document */)
@@ -236,29 +268,13 @@ var web = (function (window, $, undefined) // isolates scope
 		
 		escapeHTML: function(str) {
 			return str.replace(/[<>&\r\n"']/gm, function (match) {
-				return '&' + {
-					'<': 'lt',
-					'>': 'gt',
-					'&': 'amp',
-					'\r': "#13",
-					'\n': "#10",
-					'"': 'quot',
-					"'": 'apos'
-				}[match] + ';';
+				return TEXT_TO_ENTITY[match];
 			});
 		},
 
 		unescapeHTML: function(str) {
 			return str.replace(/&(lt|gt|amp|quot|apos|#13|#10);/gm, function (i, stored) {
-				return {
-					'lt': '<',
-					'gt': '>',
-					'amp': '&',
-					"#13": '\r',
-					"#10": '\n',
-					'quot': '"',
-					'apos': "'"
-				}[stored];
+				return ENTITY_TO_TEXT[stored];
 			});
 		}
 	};
