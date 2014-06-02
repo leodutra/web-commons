@@ -207,11 +207,16 @@ var web = (function (window, $, undefined) // isolates scope
 			return s.join(dec);
 		},
 		
-		leftPad: function(value, size, pad) {
+		leftPad: function(value, size, pad) { // very very fast
 			if (value.length < size) {
 				size -= value.length;
 				var res = '';
-				while (size--) res += pad;
+				for(;;) {
+					if (size & 1) res += pad;
+					size >>= 1;
+					if (size) pad += pad;
+					else break;
+				}
 				return res + value;
 			}
 			return value;
@@ -220,7 +225,12 @@ var web = (function (window, $, undefined) // isolates scope
 		rightPad: function(value, size, pad) {
 			if (value.length < size) {
 				size -= value.length;
-				while (size--) value += pad;
+				for(;;) {
+					if (size & 1) value += pad;
+					size >>= 1;
+					if (size) pad += pad;
+					else break;
+				}
 			}
 			return value;
 		},
