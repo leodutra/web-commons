@@ -15,7 +15,19 @@ var web = (function (window, $, undefined) // isolates scope
 	$ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
 	
-	var JS_TYPES = 'undefined null array boolean function number string'.split(' ');
+	
+	var JS_TYPES = "Array Object Function RegExp String Boolean Number Undefined Null Date Error".split(' ');
+	
+	var CLASS2TYPE = {};
+	
+	var TO_STRING = CLASS2TYPE.toString;
+	
+	
+	for (var i = BASE.length, type, type; i--;) {
+		type = JS_TYPES[i];
+		CLASS2TYPE["[object " + type + "]"] = type.toLowerCase();
+	}
+
 
 	return {
 
@@ -23,21 +35,20 @@ var web = (function (window, $, undefined) // isolates scope
 		debug: false,
 		_logger: null,
 		
-		/** SHOWS ANY TYPE based on Object.prototype.toString.call result */
+		
+		/**
+		 * Check for the types: Array Object Function RegExp String Boolean Number Undefined Null Date Error
+		 * any unknown type will be returned as 'object'
+		 */
 		type: function(any) {
-		  return Object.prototype.toString.call(any).slice(8, -1).toLowerCase();
-		},
-		 
-		/** SHOWS JS TYPES ONLY based on Object.prototype.toString.call result
-		 * any non JavaScript type will be returned as 'object' */
-		jsType: function(any) {
-		   any = web.type(any);
-		   var jsTypes = JS_TYPES;
-		   var i = jsTypes.length;
-		   while (i--) {
-		     if (jsTypes[i] == any) return any;
-		   }
-		   return 'object';
+			
+			if (any == null) { // undefined is true too
+				return any + '';
+			}
+			
+			var type = typeof any;
+			return type == 'object' || type == 'function' ?
+				TYPES[ TO_STRING.call(any) ] || 'object' : type;
 		},
 		
 		/**
@@ -216,7 +227,7 @@ var web = (function (window, $, undefined) // isolates scope
 
 		populate: function (nameValue, root/* =document */)
 		{
-			if ($.type(nameValue) == 'object') {
+			if (web.type(nameValue) == 'object') {
 				$.each(nameValue, function (name, value)
 				{
 					$('[name="' + name + '"]', root).each(function ()
