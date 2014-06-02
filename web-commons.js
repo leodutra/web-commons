@@ -14,12 +14,55 @@ var web = (function (window, $, undefined) // isolates scope
 	
 	$ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
+	
+	var JS_TYPES = 'undefined null array boolean function number string'.split(' ');
 
 	return {
 
 		/** Set to true for debug mode on */
 		debug: false,
 		_logger: null,
+		
+		/** SHOWS ANY TYPE based on Object.prototype.toString.call result */
+		type: function(any) {
+		  return Object.prototype.toString.call(any).slice(8, -1).toLowerCase();
+		},
+		 
+		/** SHOWS JS TYPES ONLY based on Object.prototype.toString.call result
+		 * any non JavaScript type will be returned as 'object' */
+		jsType: function(any) {
+		   any = web.type(any);
+		   var jsTypes = JS_TYPES;
+		   var i = jsTypes.length;
+		   while (i--) {
+		     if (jsTypes[i] == any) return any;
+		   }
+		   return 'object';
+		},
+		
+		/**
+		 * Ease object logging for developers.
+		 */
+		typify: function (obj, inheritedProperties/* =false */, separator/* =', ' */)
+		{
+			var prop, type, value, fn = [], props = [];
+			for (prop in obj)
+			{
+				if (obj.hasOwnProperty(prop) || inheritedProperties) {
+					value = obj[prop];
+					type = typeof value;
+					if (type == 'function') {
+						fn.push(prop + ('' + value) // string cast
+							.replace(/\r?\n/gim, '') // remove line breaks
+							.match(/\([^)]*\)/)); // match arguments
+					}
+					else {
+						props.push(prop + ' :' + type);
+					}
+				}
+			}
+			return props.concat(fn).join(separator || '\n');
+		},
 
 		/** Logs when debug mode is set to "true" */
 		log: (function () {
@@ -125,30 +168,6 @@ var web = (function (window, $, undefined) // isolates scope
 				};
 		})(),
 
-		/**
-		 * Ease object logging for developers.
-		 */
-		typify: function (obj, inheritedProperties/* =false */, separator/* =', ' */)
-		{
-			var prop, type, value, fn = [], props = [];
-			for (prop in obj)
-			{
-				if (obj.hasOwnProperty(prop) || inheritedProperties) {
-					value = obj[prop];
-					type = typeof value;
-					if (type == 'function') {
-						fn.push(prop + ('' + value) // string cast
-							.replace(/\r?\n/gim, '') // remove line breaks
-							.match(/\([^)]*\)/)); // match arguments
-					}
-					else {
-						props.push(prop + ' :' + type);
-					}
-				}
-			}
-			return props.concat(fn).join(separator || '\n');
-		},
-
 		number: function (number, options/*{decimals:Number, decimalSeparator:String, thousandsSeparator:String}*/)
 		{
 			// http://kevin.vanzonneveld.net/techblog/article/javascript_equivalent_for_phps_number_format/
@@ -248,9 +267,9 @@ var web = (function (window, $, undefined) // isolates scope
 		
 		escapeHTML: function(str) {
 			return str.replace(/[<>&]/gm, function (match) {
-				return & + {
+				return '&' + {
 					'<':  'lt',
-					'>':  'gt'
+					'>':  'gt',
 				///[<>&\r\n"']/gm
 					'&':  'amp',
 					//, '\r': '#13',
