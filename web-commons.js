@@ -7,7 +7,7 @@
  * https://github.com/LeoDutra/web-commons/blob/master/LICENSE
  */
  
-var web = (function (window, $, undefined) // isolates scope
+var web = (function (window, $) // isolates scope
 {
 	// http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
 	'use strict';
@@ -23,7 +23,7 @@ var web = (function (window, $, undefined) // isolates scope
 	var TO_STRING = CLASS2TYPE.toString;
 	
 	
-	for (var i = BASE.length, type, type; i--;) {
+	for (var i = JS_TYPES.length, type, type; i--;) {
 		type = JS_TYPES[i];
 		CLASS2TYPE["[object " + type + "]"] = type.toLowerCase();
 	}
@@ -42,7 +42,7 @@ var web = (function (window, $, undefined) // isolates scope
 		 */
 		type: function(any) {
 			
-			if (any == null) { // undefined is true too
+			if (any == void 0) { // undefined is true too
 				return any + '';
 			}
 			
@@ -61,7 +61,7 @@ var web = (function (window, $, undefined) // isolates scope
 			{
 				if (obj.hasOwnProperty(prop) || inheritedProperties) {
 					value = obj[prop];
-					type = typeof value;
+					type = web.type(value);
 					if (type == 'function') {
 						fn.push(prop + ('' + value) // string cast
 							.replace(/\r?\n/gim, '') // remove line breaks
@@ -78,7 +78,7 @@ var web = (function (window, $, undefined) // isolates scope
 		/** Logs when debug mode is set to "true" */
 		log: (function () {
 
-			if (window.console) {
+			if (typeof console == 'object') {
 				if (typeof console.log == 'object' || window.opera) {
 					return function() {
 						if (web.debug) Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
@@ -145,27 +145,28 @@ var web = (function (window, $, undefined) // isolates scope
 		},
 
 		/** maxlength for <textarea> elements */
-		limitTextAreaLength: function (textArea, size /*=200*/)
+		limitTextArea: function (textArea, size)
 		{
-			$(textArea).each(function ()
-			{
-				var $el = $(this);
-				size = size || 200;
-				$el.attr('maxlength', size);
-				size = $el.bind("keypress cut copy paste", function (event)
+			if (typeof size == 'number') {
+				$(textArea).each(function ()
 				{
 					var $el = $(this);
-					setTimeout(function ()
+					$el.attr('maxlength', size);
+					size = $el.bind("keypress cut copy paste", function (event)
 					{
-						if ($el.val().length > size)
+						var $el = $(this);
+						setTimeout(function ()
 						{
-							$el.val($el.val().substr(0, size));
-						}
-						$el.data('remaininglength', size - $el.val().length);
-						$el = event = null;
-					}, 100);
+							if ($el.val().length > size)
+							{
+								$el.val($el.val().substr(0, size));
+							}
+							$el.data('remaininglength', size - $el.val().length);
+							$el = event = null;
+						}, 100);
+					});
 				});
-			});
+			}
 		},
 		
 		requestAnimationFrame: (function ()
@@ -185,8 +186,8 @@ var web = (function (window, $, undefined) // isolates scope
 			number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 			var n = !isFinite(+number) ? 0 : +number,
 				prec = !isFinite(+options.decimals) ? 0 : Math.abs(options.decimals),
-				sep = (typeof options.thousandsSeparator == 'undefined') ? ',' : options.thousandsSeparator,
-				dec = (typeof options.decimalSeparator == 'undefined') ? '.' : options.decimalSeparator,
+				sep = options.thousandsSeparator == void 0 ? ',' : options.thousandsSeparator,
+				dec = options.decimalSeparator == void 0 ? '.' : options.decimalSeparator,
 				s = '',
 				toFixedFix = function (n, prec)
 				{
