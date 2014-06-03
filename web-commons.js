@@ -48,7 +48,7 @@ var web = (function (window, $) // isolates scope
 			
 			var type = typeof any;
 			return type == 'object' || type == 'function' ?
-				TYPES[ TO_STRING.call(any) ] || 'object' : type;
+				CLASS2TYPE[ TO_STRING.call(any) ] || 'object' : type;
 		},
 		
 		/**
