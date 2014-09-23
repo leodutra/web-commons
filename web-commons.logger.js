@@ -1,7 +1,7 @@
 (function(factory) {
 	var class_ = factory(window, jQuery);
 	if (window && window.webs) window.webs.Logger = class_;
-	else if (typeof module !== 'undefined' && module.exports) module.Logger = class_;
+	else if (typeof module !== 'undefined' && module.exports) module.exports = class_;
 })
 (function(window, $) {
 
