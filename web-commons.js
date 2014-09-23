@@ -18,14 +18,20 @@ var web = (function (window, $) // isolates scope
 	
 	var JS_TYPES = "Array Object Function RegExp String Boolean Number Undefined Null Date Error".split(' ');
 	
-	var CLASS2TYPE = {};
+	var TO_STRING = Object.prototype.toString;
 	
-	var TO_STRING = CLASS2TYPE.toString;
-	
-	
-	for (var i = JS_TYPES.length, type, type; i--;) {
-		type = JS_TYPES[i];
-		CLASS2TYPE["[object " + type + "]"] = type.toLowerCase();
+	function class2Type(any) { // builds on first usage and then uses cache
+		
+		if (class2Type._cached === void 0) {
+			var classes2Types = {};
+			for (var i = JS_TYPES.length, type; i--;) {
+				type = JS_TYPES[i];
+				classes2Types["[object " + type + "]"] = type.toLowerCase();
+			}
+			class2Type._cached = classes2Types;
+		}
+		
+		return class2Type._cached[TO_STRING.call(any)];
 	}
 
 
@@ -48,7 +54,7 @@ var web = (function (window, $) // isolates scope
 			
 			var type = typeof any;
 			return type == 'object' || type == 'function' ?
-				CLASS2TYPE[ TO_STRING.call(any) ] || 'object' : type;
+				class2Type(any) || 'object' : type;
 		},
 		
 		/**
