@@ -8,6 +8,8 @@
  */
  
 (function (factory) {
+	if (!jQuery) throw 'jQuery is required by web-commons';
+	
 	var bundle = factory(window, jQuery);
 	if (typeof window !== 'undefined') window.webs = bundle;
 	else if (typeof module !== 'undefined' && module.exports) module.exports = bundle;
@@ -16,9 +18,6 @@
 {
 	// http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
 	'use strict';
-	
-	$ = window.jQuery;
-	if (!$) throw 'jQuery is required by web-commons';
 	
 	var JS_TYPES = "Array Object Function RegExp String Boolean Number Undefined Null Date Error".split(' ');
 	
