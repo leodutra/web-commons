@@ -17,6 +17,8 @@ But you can just execute on your console:
 web.typify(web);  // show property/function list, breaking lines
 ```
 
+## Logging & Debugging
+
 You can turn debug mode on and log:
 
 ```js
@@ -24,3 +26,6 @@ web.debug = true; // debug mode on
 web.log('something', 'another thing', 123);
 ```
 
+**Import `web-commons.logger.js` after `web-commons.js` and use the logger addon (IE6+)**
+
+If you don't include the logger addon, it will fallback and use the built-in console of the web browser (IE 8+, Ch, FF, Op, Saf).
