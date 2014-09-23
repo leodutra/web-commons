@@ -15,7 +15,6 @@ var web = (function (window, $) // isolates scope
 	$ = window.jQuery;
 	if (!$) throw 'jQuery is required by web-commons';
 	
-	
 	var JS_TYPES = "Array Object Function RegExp String Boolean Number Undefined Null Date Error".split(' ');
 	
 	var TO_STRING = Object.prototype.toString;
