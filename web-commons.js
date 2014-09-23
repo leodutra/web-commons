@@ -35,13 +35,19 @@ var web = (function (window, $) // isolates scope
 		return class2Type._cached[TO_STRING.call(any)];
 	}
 
+	function logByAddon(args) {
+		if (web.Logger) {
+			if (loggerInstance === null) loggerInstance = new web.Logger();
+			web.Logger.prototype.log.apply(loggerInstance, args);
+			return true;
+		}
+	}
+
 
 	return {
 
 		/** Set to true for debug mode on */
 		debug: false,
-		forceUseLoggerAddon: false,
-		_logger: null,
 		
 		
 		/**
@@ -85,22 +91,18 @@ var web = (function (window, $) // isolates scope
 
 		/** Logs when debug mode is set to "true" */
 		log: (function () {
-
-			if (!web.forceUseLoggerAddon && typeof console == 'object') {
+			if (typeof console == 'object') {
 				if (typeof console.log == 'object' || window.opera) {
 					return function() {
-						if (web.debug) Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
+						if (web.debug && !logByAddon(arguments)) Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
 					};
 				}
 				return function() {
-					if (web.debug) console.log.apply(console, arguments);
+					if (web.debug && !logByAddon(arguments)) console.log.apply(console, arguments);
 				};
 			}
 			return function() {
-				if (web.debug && web.Logger) {
-					if (loggerInstance == null) loggerInstance = new web.Logger();
-					web.Logger.prototype.log.apply(loggerInstance, arguments);
-				}
+				if (web.debug) logByAddon(arguments);
 			};
 
 		})(),
