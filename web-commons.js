@@ -7,7 +7,12 @@
  * https://github.com/LeoDutra/web-commons/blob/master/LICENSE
  */
  
-var web = (function (window, $) // isolates scope
+(function (factory) {
+	var bundle = factory(window, jQuery);
+	if (typeof window !== 'undefined') window.webs = bundle;
+	else if (typeof module !== 'undefined' && module.exports) module.exports = bundle;
+})
+(function (window, $) // isolates scope
 {
 	// http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/
 	'use strict';
@@ -378,4 +383,4 @@ var web = (function (window, $) // isolates scope
 		}
 	};
 
-})(window);
+});
