@@ -60,7 +60,7 @@ if (window.web) {
 			switch(type) {
 
 				case 'function':
-					res = ('' + any).replace(/\s+/gim, ' ').replace(/\r?\n/gim, '').match(/.+?\{/gim)+'}';
+					res = ('' + any).replace(/\s+/gim, ' ').replace(/\r?\n/gim, '').match(/.+?\{/gim)+'...}';
 					break;
 
 				case 'array':
