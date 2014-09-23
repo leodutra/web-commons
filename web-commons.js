@@ -11,7 +11,7 @@
 	if (!jQuery) throw 'jQuery is required by web-commons';
 	
 	var bundle = factory(window, jQuery);
-	if (typeof window !== 'undefined') window.webs = bundle;
+	if (typeof window !== 'undefined') window.web = bundle;
 	else if (typeof module !== 'undefined' && module.exports) module.exports = bundle;
 })
 (function (window, $) // isolates scope
