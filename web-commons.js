@@ -352,7 +352,7 @@ var web = (function (window, $) // isolates scope
 					'<':  'lt',
 					'>':  'gt',
 				///[<>&\r\n"']/gm
-					'&':  'amp',
+					'&':  'amp'
 					//, '\r': '#13',
 					// '\n': '#10',
 					// '"':  'quot',
