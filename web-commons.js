@@ -19,6 +19,8 @@ var web = (function (window, $) // isolates scope
 	
 	var TO_STRING = Object.prototype.toString;
 	
+	var loggerInstance = null;
+	
 	function class2Type(any) { // builds on first usage and then uses cache
 		
 		if (class2Type._cached === void 0) {
@@ -38,6 +40,7 @@ var web = (function (window, $) // isolates scope
 
 		/** Set to true for debug mode on */
 		debug: false,
+		forceUseLoggerAddon: false,
 		_logger: null,
 		
 		
@@ -83,7 +86,7 @@ var web = (function (window, $) // isolates scope
 		/** Logs when debug mode is set to "true" */
 		log: (function () {
 
-			if (typeof console == 'object') {
+			if (!web.forceUseLoggerAddon && typeof console == 'object') {
 				if (typeof console.log == 'object' || window.opera) {
 					return function() {
 						if (web.debug) Function.prototype.call.call(console.log, console, Array.prototype.slice.call(arguments));
@@ -94,7 +97,10 @@ var web = (function (window, $) // isolates scope
 				};
 			}
 			return function() {
-				if (web.debug) alert(Array.prototype.slice.call(arguments));
+				if (web.debug && web.Logger) {
+					if (loggerInstance == null) loggerInstance = new web.Logger();
+					web.Logger.prototype.log.apply(loggerInstance, arguments);
+				}
 			};
 
 		})(),
