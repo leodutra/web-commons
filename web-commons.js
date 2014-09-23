@@ -179,6 +179,54 @@ var web = (function (window, $) // isolates scope
 					setTimeout(callback, 16.666667/* 1000/60 */);
 				};
 		})(),
+		
+		smartCreateIFrame: function(opts, attrs) {
+			/*
+				opts = {
+					src:String="javascript:false;", 
+					scrollY:Boolean=true, 
+					scrollX:Boolean=true, 
+					seamless:Boolean=true
+				}
+			*/
+		 
+			opts = opts || {};
+			var scrollY = opts.scrollY !== false;
+			var scrollX = opts.scrollX !== false;
+			opts.seamless = opts.seamless !== false;
+			
+			var baseAttr = {
+		 
+				allowtransparency: opts.seamless,
+				frameborder: '0',
+				border: '0',
+		 
+				// IE FIX BEGIN
+				scrolling: scrollY || scrollX ? 'auto' : 'no' ,
+				horizontalscrolling: scrollX ? 'yes' : 'no',
+				verticalscrolling: scrollY ? 'yes' : 'no',
+				// IE FIX END
+				
+				css: {
+					// IE FIX BEGIN
+					position:   'relative',
+					'overflow-x': scrollX ? 'auto' : 'hidden', 
+					'overflow-y': scrollY ? 'auto' : 'hidden'
+					// IE FIX END
+				},
+				src: opts.src || 'about:blank'
+			};
+		 
+			if (opts.seamless) {
+				baseAttr.seamless = "seamless";
+			}
+		 
+			if (attrs && typeof attrs == 'object') {
+				$.extend(baseAttr, attrs);
+			}
+		 
+			return $('<iframe>', baseAttr);
+		},
 
 		numFormat: function (number, options/*{decimals:Number, decimalSeparator:String, thousandsSeparator:String}*/)
 		{
