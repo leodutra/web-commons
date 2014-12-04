@@ -40,9 +40,8 @@
 	}
 
 	function logByAddon(args) {
-		if (web.Logger) {
-			if (loggerInstance === null) loggerInstance = new web.Logger();
-			web.Logger.prototype.log.apply(loggerInstance, args);
+		if (web.logger) {
+			web.logger.prototype.log.apply(loggerInstance, args);
 			return true;
 		}
 	}
