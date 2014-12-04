@@ -23,8 +23,6 @@
 	
 	var TO_STRING = Object.prototype.toString;
 	
-	var loggerInstance = null;
-	
 	function class2Type(any) { // builds on first usage and then uses cache
 		
 		if (class2Type._cached === void 0) {
@@ -41,7 +39,7 @@
 
 	function logByAddon(args) {
 		if (web.logger) {
-			web.logger.prototype.log.apply(loggerInstance, args);
+			web.logger.prototype.log.apply(web.logger, args);
 			return true;
 		}
 	}
