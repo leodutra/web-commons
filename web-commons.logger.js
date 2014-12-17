@@ -3,7 +3,6 @@
 	
 	var bundle = factory(window, jQuery);
 	if (typeof window !== 'undefined') (window.web || window).logger = new bundle(); 
-	else if (typeof module !== 'undefined' && module.exports) module.exports = bundle;
 })
 (function(window, $) {
 
