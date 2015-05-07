@@ -1,9 +1,11 @@
 
-if (typeof web !== 'object') {
-	web = {};
-}
-
-web.MsgHandler = (function() {
+(function(factory) {
+	if (!jQuery) throw 'jQuery is required by web-commons';
+	
+	var bundle = factory(window, jQuery);
+	if (typeof window !== 'undefined') (window.web || window).msghandler = new bundle(); 
+})
+(function(window, $) {
 
 	function MsgHandler(containerSelector, listID) {
 		if (this instanceof MsgHandler) {
@@ -84,4 +86,4 @@ web.MsgHandler = (function() {
 
 	return MsgHandler;
 
-})();
+});
