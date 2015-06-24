@@ -7,29 +7,30 @@
 })
 (function(window, $) {
 
-	function MsgHandler(containerSelector, listID) {
+	/**
+	 * Classe para controle de mensagens de erro, warning, info, etc
+	 * 
+	 * Dependências: 
+	 *   - jQuery 1.8+
+	 */
+	
+	function MsgHandler(containerSelector, liClass) {
 		if (this instanceof MsgHandler) {
-			this.timeout = null;
 			this.containerQuery = containerSelector;
-			this.listID = listID;
+			this.liClass = liClass;
 		}
 	}
-
+	
 	MsgHandler.prototype = {
-
+	
 		send: function(msg, sendCallback, removeCallback) {
-
-			if (this.timeout) clearTimeout(this.timeout);
-
+	
 			var $container = $(this.containerQuery);
-			var $ul = $container.children('#' + this.listID);
-
-			if (!$ul.length) { // ADD LIST
-				$ul = $('<ul>', {id: this.listID}).appendTo($container);
-			}	
+			
+			clearTimeout($container.data('msghandlerjs-timeout-id'));
 			
 			// VERIFICA MSG REPETIDA 
-			var $existing = $ul.children().filter(function() {
+			var $existing = $container.children().filter(function() {
 				return this.innerHTML === msg;
 			});
 		
@@ -38,13 +39,15 @@
 				
 				clearTimeout($existing.data('msghandlerjs-timeout-id'));
 					
-				$existing.remove().appendTo($ul);
+				$existing.remove().appendTo($container); // move to the bottom
+				
 				if (typeof sendCallback === 'function') sendCallback();
+					
 				
 				$existing.data('msghandlerjs-timeout-id', setTimeout(
 					function() { // FADE LIST-ITEM
 						$existing.fadeOut('slow', function() {
-							this.remove();
+							$(this).remove();
 							if (typeof removeCallback === 'function') {
 								removeCallback();
 								removeCallback = null; // prevent memory leak
@@ -57,19 +60,21 @@
 			
 			// SE NOVA MSG
 			else {
-				var $msg = $('<li>'+ msg + '</li>');
+				var $msg = $('<li class="' + this.liClass + '">'+ msg + '</li>');
 				
-				$ul.append($msg).parent().show(sendCallback);
+				$container.append($msg).show(sendCallback);
 				
-				this.timeout = setTimeout(function() {
+				$container.data('msghandlerjs-timeout-id', setTimeout(function() {
+				
 					$container.fadeOut(200, utils.recalcHeightFillers);
 					$container = null;  // prevent memory leak
-				}, 5000);
+				
+				}, 5000));
 			
 				$msg.data('msghandlerjs-timeout-id', setTimeout(
 					function() { // FADE LIST-ITEM
 						$msg.fadeOut('slow', function() {
-							this.remove();
+							$(this).remove();
 							if (typeof removeCallback === 'function') {
 								removeCallback();
 								removeCallback = null;  // prevent memory leak
@@ -79,8 +84,6 @@
 					}
 				, 5000));
 			}
-				
-			$ul = msg = null; // prevent memory leak
 		}
 	};
 
