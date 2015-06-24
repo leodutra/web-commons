@@ -3,7 +3,7 @@
 	if (!jQuery) throw 'jQuery is required by web-commons';
 	
 	var bundle = factory(window, jQuery);
-	if (typeof window !== 'undefined') (window.web || window).msghandler = new bundle(); 
+	if (typeof window !== 'undefined') (window.web || window).MsgHandler = bundle(); 
 })
 (function(window, $) {
 
