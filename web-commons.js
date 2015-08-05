@@ -321,6 +321,26 @@
 			}
 		},
 
+		focusFirstInput: function(root) {
+			$('input, select, textarea', typeof root === 'string' || root instanceof jQuery ? root : null).filter(':visible').first().focus();
+		},
+
+		recalcHeightFillers: function(selector, root, heightModAttribute) {
+
+			$(selector, typeof root === 'string' || root instanceof jQuery ? root : null).each(function() {
+				
+				var mod = heightModAttribute && parseInt(this.getAttribute(heightModAttribute), 10) || 0;
+				var $el = $(this);
+				$el.height($(window).height() - mod - $el.offset().top - 2);
+			});
+
+			root = null;
+		},
+
+		preventIEGhostCell: function(html) { // http://stackoverflow.com/questions/5805956/internet-explorer-9-not-rendering-table-cells-properly 
+			return html.replace(/td>[\s\r\n]+<td/gim, 'td><td');
+		},
+
 		resetForm: function(forms) {
 			$(forms).filter('form').each(function(i, form) {
 				form.reset();
