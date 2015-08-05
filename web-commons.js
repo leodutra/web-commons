@@ -331,7 +331,7 @@
 				
 				var mod = heightModAttribute && parseInt(this.getAttribute(heightModAttribute), 10) || 0;
 				var $el = $(this);
-				$el.height($(window).height() - mod - $el.offset().top - 2);
+				$el.height($(window).height() - mod - $el.offset().top);
 			});
 
 			root = null;
