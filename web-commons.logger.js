@@ -14,11 +14,11 @@
 
 			var id = 'web-commons-logger';
 
-			var $box = $('<div style="display: none; position: fixed; *position: absolute; top: 10px; right: 10px; width: 600px; height: 300px; z-index: 9999; border: 1px solid #ddd;  font: normal 12px \"Lucida Console\", Monaco, monospace; border: 1px solid #DDD; background: #FFF;"></div>');
+			var $box = $('<div style="display: none; position: fixed; *position: absolute; top: 10px; right: 10px; width: 600px; height: 300px; z-index: 9999; border: 1px solid #ddd; font: normal 12px monospace !important; border: 1px solid #DDD; background: #FFF !important;"></div>');
 			$box.css('opacity', 0.93);              
 
 			var $title = $('<div style="position: relative; text-indent: 5px; line-height: 18px; background: #DDD;"><b>'+id+':</b></div>');
-			var $close = $('<div style="position: absolute; top: 0; right: 5px;"><b>x</b></div>');
+			var $close = $('<div style="position: absolute; top: 0; right: 5px; cursor: pointer;" title="Click to close"><b>x</b></div>');
 
 			$close.on('click', function() {
 			  that.hide();
@@ -122,7 +122,7 @@
 			}
 
 			var $log = this.$box.children('.log');
-			$log.append('<p style="margin: 0.5em 0;">' +res.join(', ') +'</p>');
+			$log.append('<p style="margin: 0.5em 0;">\u27A4&nbsp;' +res.join(', ') +'</p>');
 			$log.clearQueue();
 			$log.animate({scrollTop: $log[0].scrollHeight});
 		},
