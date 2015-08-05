@@ -14,7 +14,7 @@
 
 			var id = 'web-commons-logger';
 
-			var $box = $('<div style="display: none; position: fixed; *position: absolute; top: 10px; right: 10px; width: 600px; height: 300px; z-index: 9999; border: 1px solid #ddd;  font: normal 12px \'Courier New\', Courier, monospace; border: 1px solid #DDD; background: #FFF;"></div>');
+			var $box = $('<div style="display: none; position: fixed; *position: absolute; top: 10px; right: 10px; width: 600px; height: 300px; z-index: 9999; border: 1px solid #ddd;  font: normal 12px \"Lucida Console\", Monaco, monospace; border: 1px solid #DDD; background: #FFF;"></div>');
 			$box.css('opacity', 0.93);              
 
 			var $title = $('<div style="position: relative; text-indent: 5px; line-height: 18px; background: #DDD;"><b>'+id+':</b></div>');
