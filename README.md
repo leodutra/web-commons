@@ -26,6 +26,6 @@ web.debug = true; // debug mode on
 web.log('something', 'another thing', 123);
 ```
 
-**Import `web-commons.logger.js` after `web-commons.js` for use the logger addon (IE6+)**
+**Import `web-commons.logger.js` after `web-commons.js` to use the logger addon (IE6+)**
 
 If you don't include the logger addon, it will fallback and use the built-in console of the web browser (IE 8+, Ch, FF, Op, Saf).
